@@ -116,7 +116,7 @@ func (this *Clarch) genUseCase() error {
 		return err
 	}
 
-	cmd := exec.Command("mockery", "-dir", fmt.Sprintf("%s/usecase", this.Config.Pkg), "-name", fmt.Sprintf("%sUsecase", camelCase(this.Config.Pkg)), "-output", fmt.Sprintf("%s/usecase/mock", this.Config.Pkg))
+	cmd := exec.Command("mockery", "-dir", fmt.Sprintf("%s/usecase", this.Config.Pkg), "-name", fmt.Sprintf("%sUsecase", camelCase(this.Config.Pkg)), "-outpkg", "mock", "-output", fmt.Sprintf("%s/usecase/mock", this.Config.Pkg))
 	if err := cmd.Run(); err != nil {
 		pp.Println(cmd)
 		return err
@@ -161,7 +161,7 @@ func (this *Clarch) genRepo() error {
 		return err
 	}
 
-	cmd := exec.Command("mockery", "-dir", fmt.Sprintf("%s/repository", this.Config.Pkg), "-name", fmt.Sprintf("%sRepository", camelCase(this.Config.Pkg)), "-output", fmt.Sprintf("%s/repository/mock", this.Config.Pkg))
+	cmd := exec.Command("mockery", "-dir", fmt.Sprintf("%s/repository", this.Config.Pkg), "-name", fmt.Sprintf("%sRepository", camelCase(this.Config.Pkg)), "-outpkg", "mock", "-output", fmt.Sprintf("%s/repository/mock", this.Config.Pkg))
 	if err := cmd.Run(); err != nil {
 		return err
 	}
