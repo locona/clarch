@@ -18,14 +18,20 @@ func main() {
 	conf.GithubRepository = dirNames[len(dirNames)-1]
 
 	c := clarch.Clarch{Config: conf}
-	c.Run()
+	switch conf.Mode {
+	case "init":
+		c.Init()
+	default:
+		c.Run()
+	}
 }
 
 func parseArgs(args ...string) clarch.Config {
 	var conf clarch.Config
 	f := flag.NewFlagSet(args[0], flag.ExitOnError)
-	f.StringVar(&conf.Pkg, "pkg", "", "name or matching regular expression of interface to generate mock for")
-	f.StringVar(&conf.DB, "db", "psql", "name or matching regular expression of interface to generate mock for")
+	f.StringVar(&conf.Mode, "mode", "run", "init | run")
+	f.StringVar(&conf.Pkg, "pkg", "", "")
+	f.StringVar(&conf.DB, "db", "psql", "")
 	f.Parse(args[1:])
 	return conf
 }

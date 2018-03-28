@@ -15,6 +15,13 @@ type Clarch struct {
 	Config Config
 }
 
+func (this *Clarch) Init() {
+	if err := this.genProject(); err != nil {
+		log.Fatal(err)
+	}
+	log.Println("Complete ...")
+}
+
 func (this *Clarch) Run() {
 	if err := this.genEntity(); err != nil {
 		log.Fatal(err)
@@ -23,13 +30,29 @@ func (this *Clarch) Run() {
 		log.Fatal(err)
 	}
 	if err := this.genUseCase(); err != nil {
-		pp.Println("=======")
 		log.Fatal(err)
 	}
 	if err := this.genHttpHandler(); err != nil {
 		log.Fatal(err)
 	}
 	log.Println("Complete ...")
+}
+
+func (this *Clarch) genProject() error {
+	dirPath := "project"
+	if err := mkdir(dirPath); err != nil {
+		return err
+	}
+
+	t := template.Must(template.ParseFiles("./clarch/templates/project/handler.tpl"))
+	fp, err := os.OpenFile(fmt.Sprintf("%s/handler.go", dirPath), os.O_RDWR|os.O_CREATE, 0666)
+	if err != nil {
+		return err
+	}
+	defer fp.Close()
+
+	value := struct{}{}
+	return t.Execute(fp, value)
 }
 
 func (this *Clarch) genHttpHandler() error {
