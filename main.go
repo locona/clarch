@@ -31,7 +31,7 @@ func parseArgs(args ...string) clarch.Config {
 	f := flag.NewFlagSet(args[0], flag.ExitOnError)
 	f.StringVar(&conf.Mode, "mode", "run", "init | run")
 	f.StringVar(&conf.Pkg, "pkg", "", "")
-	f.StringVar(&conf.DB, "db", "psql", "")
+	f.StringVar(&conf.DB, "db", "gorm", "")
 	f.Parse(args[1:])
 	return conf
 }

@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/k0kubun/pp"
+	"github.com/locona/clarch/bindata"
 )
 
 type Clarch struct {
@@ -44,7 +45,9 @@ func (this *Clarch) genProject() error {
 		return err
 	}
 
-	t := template.Must(template.ParseFiles("./clarch/templates/project/handler.tpl"))
+	tplFile, err := bindata.Asset("clarch/templates/project/handler.tpl")
+	t := template.New("project")
+	t, _ = t.Parse(string(tplFile))
 	fp, err := os.OpenFile(fmt.Sprintf("%s/handler.go", dirPath), os.O_RDWR|os.O_CREATE, 0666)
 	if err != nil {
 		return err
@@ -61,7 +64,9 @@ func (this *Clarch) genHttpHandler() error {
 		return err
 	}
 
-	t := template.Must(template.ParseFiles("./clarch/templates/handler/http/http.tpl"))
+	tplFile, err := bindata.Asset("clarch/templates/handler/http/http.tpl")
+	t := template.New("handler")
+	t, _ = t.Parse(string(tplFile))
 	fp, err := os.OpenFile(fmt.Sprintf("%s/%s_handler.go", filePath, this.Config.Pkg), os.O_RDWR|os.O_CREATE, 0666)
 	if err != nil {
 		return err
@@ -89,7 +94,9 @@ func (this *Clarch) genUseCase() error {
 		return err
 	}
 
-	t := template.Must(template.ParseFiles("./clarch/templates/usecase/usecase.tpl"))
+	tplFile, err := bindata.Asset("clarch/templates/usecase/usecase.tpl")
+	t := template.New("usecase")
+	t, _ = t.Parse(string(tplFile))
 	t = t.Funcs(template.FuncMap{
 		"safeHTML": func(s interface{}) template.HTML {
 			return template.HTML(fmt.Sprint(s))
@@ -130,7 +137,9 @@ func (this *Clarch) genRepo() error {
 		return err
 	}
 
-	t := template.Must(template.ParseFiles("./clarch/templates/repository/repository.tpl"))
+	tplFile, err := bindata.Asset("clarch/templates/repository/repository.tpl")
+	t := template.New("repository")
+	t, _ = t.Parse(string(tplFile))
 	t = t.Funcs(template.FuncMap{
 		"safeHTML": func(s interface{}) template.HTML {
 			return template.HTML(fmt.Sprint(s))
@@ -165,8 +174,9 @@ func (this *Clarch) genRepo() error {
 	if err := cmd.Run(); err != nil {
 		return err
 	}
-
-	t2 := template.Must(template.ParseFiles("./clarch/templates/repository/gorm_repository.tpl"))
+	tplFile2, err := bindata.Asset("clarch/templates/repository/gorm_repository.tpl")
+	t2 := template.New("gorm_repository")
+	t2, _ = t2.Parse(string(tplFile2))
 	t2 = t2.Funcs(template.FuncMap{
 		"safeHTML": func(s interface{}) template.HTML {
 			return template.HTML(fmt.Sprint(s))
@@ -192,7 +202,10 @@ func (this *Clarch) genEntity() error {
 	if err := mkdir(filePath); err != nil {
 		return err
 	}
-	t := template.Must(template.ParseFiles(fmt.Sprintf("./clarch/templates/%s.tpl", "entity")))
+
+	tplFile, err := bindata.Asset("clarch/templates/entity.tpl")
+	t := template.New("entity")
+	t, _ = t.Parse(string(tplFile))
 	fp, err := os.OpenFile(fmt.Sprintf("%s/entity.go", filePath), os.O_RDWR|os.O_CREATE, 0666)
 	defer fp.Close()
 	if err != nil {

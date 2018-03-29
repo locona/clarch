@@ -9,3 +9,6 @@ run:
 	@sh ./reflesh.sh
 	@go install
 	@clarch
+
+bind:
+	@go-bindata -o bindata/bindata.go --pkg bindata clarch/templates/...
