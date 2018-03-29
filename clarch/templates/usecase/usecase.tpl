@@ -40,12 +40,19 @@ func (this *{{.Pkg}}Usecase) FindById(id int) (*{{.Pkg}}.{{.CamelPkg}}, error) {
 	return res, nil
 }
 
-func (this *{{.Pkg}}Usecase) Store(*{{.Pkg}}.{{.CamelPkg}}) (*{{.Pkg}}.{{.CamelPkg}}, error) {
-	return this.{{.Pkg}}Repo.Store(j)
+func (this *{{.Pkg}}Usecase) Store(value *{{.Pkg}}.{{.CamelPkg}}) (*{{.Pkg}}.{{.CamelPkg}}, error) {
+	return this.{{.Pkg}}Repo.Store(value)
 }
 
-func (this *{{.Pkg}}Usecase) Update(*{{.Pkg}}.{{.CamelPkg}}) (*{{.Pkg}}.{{.CamelPkg}}, error) {
-	return this.{{.Pkg}}Repo.Update(j)
+func (this *{{.Pkg}}Usecase) Update(id int, value *{{.Pkg}}.{{.CamelPkg}}) (*{{.Pkg}}.{{.CamelPkg}}, error) {
+        existed, err := this.{{.Pkg}}Repo.FindById(id)
+	if existed == nil {
+		return nil, errors.New("Not found")
+	}
+	if err != nil {
+		return nil, err
+	}
+	return this.{{.Pkg}}Repo.Update(id, value)
 }
 
 func (this *{{.Pkg}}Usecase) Delete(id int) error {

@@ -36,13 +36,13 @@ func (this *Http{{.CamelPkg}}Handler) FindById(c *gin.Context) {
 }
 
 func (this *Http{{.CamelPkg}}Handler) Store(c *gin.Context) {
-	var o {{.Pkg}}.{{.CamelPkg}}
-	if err := c.BindJSON(&o); err != nil {
+	var item {{.Pkg}}.{{.CamelPkg}}
+	if err := c.BindJSON(&item); err != nil {
 		c.JSON(http.StatusBadRequest, err)
 		return
 	}
 
-	res, err := this.{{.Pkg}}UC.Store(&o)
+	res, err := this.{{.Pkg}}UC.Store(&item)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err)
 		return
@@ -51,13 +51,19 @@ func (this *Http{{.CamelPkg}}Handler) Store(c *gin.Context) {
 }
 
 func (this *Http{{.CamelPkg}}Handler) Update(c *gin.Context) {
-	var o {{.Pkg}}.{{.CamelPkg}}
-	if err := c.BindJSON(&o); err != nil {
+        id := this.ParseID(c)
+        item, err := this.{{.Pkg}}UC.FindByid(id)
+        if err != nil {
+		c.JSON(http.StatusBadRequest, err)
+		return
+        }
+
+	if err := this.ValidateBindJSON(c, &item); err != nil {
 		c.JSON(http.StatusBadRequest, err)
 		return
 	}
 
-	res, err := this.{{.Pkg}}UC.Update(&o)
+	res, err := this.{{.Pkg}}UC.Update(item)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err)
 		return
@@ -66,12 +72,12 @@ func (this *Http{{.CamelPkg}}Handler) Update(c *gin.Context) {
 }
 
 func (this *Http{{.CamelPkg}}Handler) Delete(c *gin.Context) {
-	id := c.GetInt("id")
-	if err := this.{{.Pkg}}UC.Delete(id);err!=nil{
+	id := this.ParseID(c)
+	if err := this.{{.Pkg}}UC.Delete(id); err != nil {
 		c.JSON(http.StatusBadRequest, err)
 		return
 	}
-	ctx.Writer.WriteHeader(http.StatusOK)
+	c.Writer.WriteHeader(http.StatusOK)
 }
 
 func New{{.CamelPkg}}HttpHandler(g *gin.Engine, uc usecase.{{.CamelPkg}}Usecase) {
