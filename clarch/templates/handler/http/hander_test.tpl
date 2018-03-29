@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/{{.GithubUser}}/{{.GithubRepository}}/job"
-	"github.com/{{.GithubUser}}/{{.GithubRepository}}/job/usecase/mock"
+	"github.com/{{.GithubUser}}/{{.GithubRepository}}/job/usecase/mocks"
 	"github.com/bxcodec/faker"
 	"github.com/gin-gonic/gin"
 	"github.com/k0kubun/pp"
@@ -18,7 +18,7 @@ func TestFindAll(t *testing.T) {
 	err := faker.FakeData(&m)
 	assert.NoError(t, err)
 
-	mockUCase := new(mock.JobUsecase)
+	mockUCase := new(mocks.JobUsecase)
 	mockJobList := make([]*{{.Pkg}}.{{.CamelPkg}}, 0)
 	mockJobList = append(mockJobList, &m)
 	mockUCase.On("FindAll").Return(mockJobList, nil)

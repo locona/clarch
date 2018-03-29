@@ -2,14 +2,16 @@ package http
 
 import (
 	"net/http"
-	"github.com/gin-gonic/gin"
 
 	"github.com/{{.GithubUser}}/{{.GithubRepository}}/{{.Pkg}}"
 	"github.com/{{.GithubUser}}/{{.GithubRepository}}/{{.Pkg}}/usecase"
+	"github.com/{{.GithubUser}}/{{.GithubRepository}}/project"
+	"github.com/gin-gonic/gin"
 )
 
 
 type Http{{.CamelPkg}}Handler struct {
+	project.HandlerProject
 	{{.Pkg}}UC usecase.{{.CamelPkg}}UseCase
 }
 
