@@ -12,7 +12,7 @@ import (
 
 type Http{{.CamelPkg}}Handler struct {
 	project.HandlerProject
-	{{.Pkg}}UC usecase.{{.CamelPkg}}UseCase
+	{{.Pkg}}UC usecase.{{.CamelPkg}}Usecase
 }
 
 func (this *Http{{.CamelPkg}}Handler) FindAll(c *gin.Context) {
@@ -37,7 +37,7 @@ func (this *Http{{.CamelPkg}}Handler) FindById(c *gin.Context) {
 
 func (this *Http{{.CamelPkg}}Handler) Store(c *gin.Context) {
 	var item {{.Pkg}}.{{.CamelPkg}}
-	if err := c.BindJSON(&item); err != nil {
+	if err := this.ValidateBindJSON(c, &item); err != nil {
 		c.JSON(http.StatusBadRequest, err)
 		return
 	}
@@ -52,7 +52,7 @@ func (this *Http{{.CamelPkg}}Handler) Store(c *gin.Context) {
 
 func (this *Http{{.CamelPkg}}Handler) Update(c *gin.Context) {
         id := this.ParseID(c)
-        item, err := this.{{.Pkg}}UC.FindByid(id)
+        item, err := this.{{.Pkg}}UC.FindById(id)
         if err != nil {
 		c.JSON(http.StatusBadRequest, err)
 		return
@@ -63,7 +63,7 @@ func (this *Http{{.CamelPkg}}Handler) Update(c *gin.Context) {
 		return
 	}
 
-	res, err := this.{{.Pkg}}UC.Update(item)
+	res, err := this.{{.Pkg}}UC.Update(id, item)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err)
 		return
@@ -84,9 +84,10 @@ func New{{.CamelPkg}}HttpHandler(g *gin.Engine, uc usecase.{{.CamelPkg}}Usecase)
 	h := &Http{{.CamelPkg}}Handler{
 		{{.Pkg}}UC: uc,
 	}
-	g.GET("/{{.Pkg}}s", h.FindAll)
-	g.GET("/{{.Pkg}}s/:id", h.FindById)
-	g.POST("/{{.Pkg}}s", h.Store)
-	g.PUT("/{{.Pkg}}s/:id", h.Update)
-	g.DELETE("/{{.Pkg}}s/:id", h.Delete)
+	v1 := g.Group("/api/v1")
+	v1.GET("/{{.Pkg}}s", h.FindAll)
+	v1.GET("/{{.Pkg}}s/:id", h.FindById)
+	v1.POST("/{{.Pkg}}s", h.Store)
+	v1.PUT("/{{.Pkg}}s/:id", h.Update)
+	v1.DELETE("/{{.Pkg}}s/:id", h.Delete)
 }

@@ -10,7 +10,7 @@ type {{.CamelPkg}}Usecase interface {
 	FindAll() ([]*{{.Pkg}}.{{.CamelPkg}}, error)
 	FindById(id int) (*{{.Pkg}}.{{.CamelPkg}}, error)
 	Store(*{{.Pkg}}.{{.CamelPkg}}) (*{{.Pkg}}.{{.CamelPkg}}, error)
-	Update(*{{.Pkg}}.{{.CamelPkg}}) (*{{.Pkg}}.{{.CamelPkg}}, error)
+	Update(int, *{{.Pkg}}.{{.CamelPkg}}) (*{{.Pkg}}.{{.CamelPkg}}, error)
 	Delete(id int) error
 }
 
@@ -24,7 +24,7 @@ func New{{.CamelPkg}}Usecase(r repository.{{.CamelPkg}}Repository) {{.CamelPkg}}
 	}
 }
 
-func (this *{{.Pkg}}Usecase) FindAll() (*{{.Pkg}}.{{.CamelPkg}}, error) {
+func (this *{{.Pkg}}Usecase) FindAll() ([]*{{.Pkg}}.{{.CamelPkg}}, error) {
 	res, err := this.{{.Pkg}}Repo.FindAll()
 	if err != nil {
 		return nil, err

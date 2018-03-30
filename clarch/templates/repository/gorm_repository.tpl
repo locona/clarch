@@ -33,7 +33,7 @@ func (this *gorm{{.CamelPkg}}Repository) Store(value *{{.Pkg}}.{{.CamelPkg}}) (*
 	if err := this.Conn.Create(&value).Error; err != nil {
 		return nil, err
 	}
-	return o, nil
+	return value, nil
 }
 
 func (this *gorm{{.CamelPkg}}Repository) Update(id int, value *{{.Pkg}}.{{.CamelPkg}}) (*{{.Pkg}}.{{.CamelPkg}}, error) {
@@ -41,7 +41,7 @@ func (this *gorm{{.CamelPkg}}Repository) Update(id int, value *{{.Pkg}}.{{.Camel
 	if err := this.Conn.Update(&value).Error; err != nil {
 		return nil, err
 	}
-	return o, nil
+	return value, nil
 }
 
 func (this *gorm{{.CamelPkg}}Repository) Delete(id int) error {
