@@ -2,14 +2,14 @@ package repository
 
 import (
 	"github.com/{{.CurrentUser}}/{{.CurrentRepo}}/{{.Pkg}}"
-	"github.com/{{.CurrentUser}}/{{.CurrentRepo}}/{{.Pkg}}/infra"
+	"github.com/jinzhu/gorm"
 )
 
 type gorm{{.CamelPkg}}Repository struct {
 	Conn *gorm.DB
 }
 
-func NewGorm{{.CamelPkg}}Repository(Conn *gorm.Gorm) {{.CamelPkg}}Repository {
+func NewGorm{{.CamelPkg}}Repository(Conn *gorm.DB) {{.CamelPkg}}Repository {
 	return &gorm{{.CamelPkg}}Repository{Conn}
 }
 

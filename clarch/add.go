@@ -31,6 +31,7 @@ type value struct {
 	CurrentDir  string
 	CurrentRepo string
 	CurrentUser string
+	CamelPkg    string
 	Pkg         string
 }
 
@@ -94,7 +95,7 @@ func (this *uc) gen() error {
 }
 
 func (this *uc) openFile() (*os.File, error) {
-	filePath := fmt.Sprintf("%s/usecase/%s_uc.go", this.value.Pkg)
+	filePath := fmt.Sprintf("%s/usecase/%s_uc.go", this.value.Pkg, this.value.Pkg)
 	return openOrCreate(filePath)
 }
 func (this *uc) tplPath() string {
@@ -166,7 +167,7 @@ func (this *repo) openFile(storategy string) (*os.File, error) {
 
 func (this *repo) tplPath(storategy string) string {
 	switch storategy {
-	case "repository":
+	case "repo":
 		return "clarch/templates/repository/repository.tpl"
 	case "gorm":
 		return "clarch/templates/repository/gorm_repository.tpl"
@@ -219,6 +220,7 @@ func (this *cmdadd) Add() error {
 	if err := GenEntity(this); err != nil {
 		return err
 	}
+
 	return nil
 }
 
@@ -235,6 +237,7 @@ func NewCmdAdd(pkg string) *cmdadd {
 			CurrentDir:  dir,
 			CurrentUser: dirNames[len(dirNames)-2],
 			CurrentRepo: dirNames[len(dirNames)-1],
+			CamelPkg:    camelCase(pkg),
 			Pkg:         pkg,
 		},
 	}

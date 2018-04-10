@@ -15,6 +15,10 @@
 package cmd
 
 import (
+	"fmt"
+	"log"
+	"os"
+
 	"github.com/locona/clarch/clarch"
 	"github.com/spf13/cobra"
 )
@@ -25,9 +29,16 @@ var AddCmd = &cobra.Command{
 	Short: "",
 	Long:  "",
 	Run: func(cmd *cobra.Command, args []string) {
-		c := clarch.NewCmdAdd(args[0])
-		if err := c.Add(); err != nil {
-			cmd.Println(err)
+		pkg := args[0]
+		if pkg == "" {
+			log.Fatal("required args")
 		}
+		c := clarch.NewCmdAdd(pkg)
+		if err := c.Add(); err != nil {
+			fmt.Println(err)
+			cmd.Println(err)
+			os.Exit(1)
+		}
+
 	},
 }
