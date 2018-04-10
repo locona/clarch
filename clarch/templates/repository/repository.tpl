@@ -1,6 +1,6 @@
 package repository
 
-import "github.com/{{.GithubUser}}/{{.GithubRepository}}/{{.Pkg}}"
+import "github.com/{{.CurrentUser}}/{{.CurrentRepo}}/{{.Pkg}}"
 
 type {{.CamelPkg}}Repository interface {
 	FindAll() ([]*{{.Pkg}}.{{.CamelPkg}}, error)

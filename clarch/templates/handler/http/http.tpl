@@ -3,9 +3,9 @@ package http
 import (
 	"net/http"
 
-	"github.com/{{.GithubUser}}/{{.GithubRepository}}/{{.Pkg}}"
-	"github.com/{{.GithubUser}}/{{.GithubRepository}}/{{.Pkg}}/usecase"
-	"github.com/{{.GithubUser}}/{{.GithubRepository}}/project"
+	"github.com/{{.CurrentUser}}/{{.CurrentRepo}}/{{.Pkg}}"
+	"github.com/{{.CurrentUser}}/{{.CurrentRepo}}/{{.Pkg}}/usecase"
+	"github.com/{{.CurrentUser}}/{{.CurrentRepo}}/project"
 	"github.com/gin-gonic/gin"
 )
 

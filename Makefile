@@ -2,11 +2,13 @@
 
 init:
 	@sh ./reflesh.sh
+	@make bind
 	@go install
-	@clarch --mode init
+	@clarch
 
 run:
 	@sh ./reflesh.sh
+	@make bind
 	@go install
 	@clarch
 

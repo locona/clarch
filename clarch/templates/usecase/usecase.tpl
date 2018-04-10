@@ -2,8 +2,8 @@ package usecase
 
 import (
 	"errors"
-	"github.com/{{.GithubUser}}/{{.GithubRepository}}/{{.Pkg}}"
-	"github.com/{{.GithubUser}}/{{.GithubRepository}}/{{.Pkg}}/repository"
+	"github.com/{{.CurrentUser}}/{{.CurrentRepo}}/{{.Pkg}}"
+	"github.com/{{.CurrentUser}}/{{.CurrentRepo}}/{{.Pkg}}/repository"
 )
 
 type {{.CamelPkg}}Usecase interface {

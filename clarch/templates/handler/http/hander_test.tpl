@@ -5,8 +5,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/{{.GithubUser}}/{{.GithubRepository}}/job"
-	"github.com/{{.GithubUser}}/{{.GithubRepository}}/job/usecase/mocks"
+	"github.com/{{.CurrentUser}}/{{.CurrentRepo}}/job"
+	"github.com/{{.CurrentUser}}/{{.CurrentRepo}}/job/usecase/mocks"
 	"github.com/bxcodec/faker"
 	"github.com/gin-gonic/gin"
 	"github.com/k0kubun/pp"

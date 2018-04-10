@@ -2,32 +2,26 @@
 
 
 [[projects]]
-  name = "github.com/k0kubun/pp"
+  name = "github.com/inconshreveable/mousetrap"
   packages = ["."]
-  revision = "027a6d1765d673d337e687394dbe780dd64e2a1e"
-  version = "v2.3.0"
+  revision = "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
+  version = "v1.0"
 
 [[projects]]
-  name = "github.com/mattn/go-colorable"
+  name = "github.com/spf13/cobra"
   packages = ["."]
-  revision = "167de6bfdfba052fa6b2d3664c8f5272e23c9072"
-  version = "v0.0.9"
+  revision = "a1f051bc3eba734da4772d60e2d677f47cf93ef4"
+  version = "v0.0.2"
 
 [[projects]]
-  name = "github.com/mattn/go-isatty"
+  name = "github.com/spf13/pflag"
   packages = ["."]
-  revision = "0360b2af4f38e8d38c7fce2a9f4e702702d73a39"
-  version = "v0.0.3"
-
-[[projects]]
-  branch = "master"
-  name = "golang.org/x/sys"
-  packages = ["unix"]
-  revision = "13d03a9a82fba647c21a0ef8fba44a795d0f0835"
+  revision = "e57e3eeb33f795204c1ca35f56c44f83227c6e66"
+  version = "v1.0.0"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7e874ea42c2d89fac7405e7b6dae738e057d3006abfe94a07cd5b3297e89d7f9"
+  inputs-digest = "ea1a1d630ce6bdf03ae4fbb7e51438d70a405292d40afa602865dcb198cae597"
   solver-name = "gps-cdcl"
   solver-version = 1
