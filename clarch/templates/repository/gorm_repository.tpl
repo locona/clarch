@@ -22,7 +22,7 @@ func (this *gorm{{.CamelPkg}}Repository) FindAll() ([]*{{.Pkg}}.{{.CamelPkg}}, e
 }
 
 func (this *gorm{{.CamelPkg}}Repository) FindById(id int) (*{{.Pkg}}.{{.CamelPkg}}, error) {
-	var item {{.Pkg}}.{{.CamelPkg}}
+	item := &{{.Pkg}}.{{.CamelPkg}}{}
 	if err := this.Conn.First(&item, id).Error; err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func (this *gorm{{.CamelPkg}}Repository) Update(id int, value *{{.Pkg}}.{{.Camel
 }
 
 func (this *gorm{{.CamelPkg}}Repository) Delete(id int) error {
-	var item {{.Pkg}}.{{.CamelPkg}}
+	item := &{{.Pkg}}.{{.CamelPkg}}{}
 	if err := this.Conn.Delete(&item, id).Error; err != nil {
 		return err
 	}

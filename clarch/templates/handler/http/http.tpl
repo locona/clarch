@@ -36,7 +36,7 @@ func (this *Http{{.CamelPkg}}Handler) FindById(c *gin.Context) {
 }
 
 func (this *Http{{.CamelPkg}}Handler) Store(c *gin.Context) {
-	var item {{.Pkg}}.{{.CamelPkg}}
+	item := &{{.Pkg}}.{{.CamelPkg}}{}
 	if err := this.ValidateBindJSON(c, &item); err != nil {
 		c.JSON(http.StatusBadRequest, err)
 		return
