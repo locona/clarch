@@ -35,16 +35,11 @@ type value struct {
 }
 
 type cmdadd struct {
-	http
-	uc
-	repo
-	entity
-
 	value value
 }
 
 func (this *http) gen() error {
-	fp, err := openFile()
+	fp, err := this.openFile()
 	defer fp.Close()
 	if err != nil {
 		return err
@@ -78,7 +73,7 @@ func (this *http) genPath() string {
 }
 
 func (this *uc) gen() error {
-	fp, err := openFile()
+	fp, err := this.openFile()
 	defer fp.Close()
 	if err != nil {
 		return err
@@ -117,7 +112,7 @@ func (this *repo) gen() error {
 }
 
 func (this *repo) genInterface() error {
-	fp, err := openFile("repo")
+	fp, err := this.openFile("repo")
 	defer fp.Close()
 	if err != nil {
 		return err
@@ -138,7 +133,7 @@ func (this *repo) genInterface() error {
 }
 
 func (this *repo) genGorm() error {
-	fp, err := openFile("gorm")
+	fp, err := this.openFile("gorm")
 	defer fp.Close()
 	if err != nil {
 		return err
@@ -170,7 +165,6 @@ func (this *repo) openFile(storategy string) (*os.File, error) {
 }
 
 func (this *repo) tplPath(storategy string) string {
-	var filePath string
 	switch storategy {
 	case "repository":
 		return "clarch/templates/repository/repository.tpl"
@@ -183,7 +177,7 @@ func (this *repo) tplPath(storategy string) string {
 }
 
 func (this *entity) gen() error {
-	fp, err := openFile()
+	fp, err := this.openFile()
 	defer fp.Close()
 	if err != nil {
 		return err
@@ -247,21 +241,21 @@ func NewCmdAdd(pkg string) *cmdadd {
 }
 
 func GenHttp(cmd *cmdadd) error {
-	o := http{cmd}
+	o := http{*cmd}
 	return o.gen()
 }
 
 func GenUC(cmd *cmdadd) error {
-	o := uc{cmd}
+	o := uc{*cmd}
 	return o.gen()
 }
 
 func GenRepo(cmd *cmdadd) error {
-	o := repo{cmd}
+	o := repo{*cmd}
 	return o.gen()
 }
 
 func GenEntity(cmd *cmdadd) error {
-	o := entity{cmd}
+	o := entity{*cmd}
 	return o.gen()
 }

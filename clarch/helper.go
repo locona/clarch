@@ -13,9 +13,9 @@ func mkdir(filePath string) error {
 
 func openOrCreate(filePath string) (*os.File, error) {
 	paths := strings.Split(filePath, "/")
-	fileName := paths[len(paths)-1]
-	dirs := strings.Join(paths[0 : len(paths)-1])
-	if err := os.MkdirAll(dirs); err != nil {
+	// fileName := paths[len(paths)-1]
+	dirs := strings.Join(paths[0:len(paths)-1], "/")
+	if err := os.MkdirAll(dirs, os.ModePerm); err != nil {
 		log.Fatal(err)
 		os.Exit(1)
 	}

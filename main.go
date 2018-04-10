@@ -1,9 +1,6 @@
 package main
 
 import (
-	"flag"
-
-	"github.com/locona/clarch/clarch"
 	"github.com/locona/clarch/cmd"
 )
 
@@ -27,11 +24,11 @@ func main() {
 	cmd.Execute()
 }
 
-func parseArgs(args ...string) clarch.Config {
-	var conf clarch.Config
-	f := flag.NewFlagSet(args[0], flag.ExitOnError)
-	f.StringVar(&conf.Pkg, "pkg", "", "")
-	f.StringVar(&conf.DB, "db", "pq", "")
-	f.Parse(args[1:])
-	return conf
-}
+// func parseArgs(args ...string) clarch.Config {
+// var conf clarch.Config
+// f := flag.NewFlagSet(args[0], flag.ExitOnError)
+// f.StringVar(&conf.Pkg, "pkg", "", "")
+// f.StringVar(&conf.DB, "db", "pq", "")
+// f.Parse(args[1:])
+// return conf
+// }
