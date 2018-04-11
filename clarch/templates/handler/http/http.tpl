@@ -36,13 +36,13 @@ func (this *Http{{.CamelPkg}}Handler) FindById(c *gin.Context) {
 }
 
 func (this *Http{{.CamelPkg}}Handler) Store(c *gin.Context) {
-	item := &{{.Pkg}}.{{.CamelPkg}}{}
-	if err := this.ValidateBindJSON(c, &item); err != nil {
+	params := &{{.Pkg}}.{{.CamelPkg}}{}
+	if err := this.ValidateBindJSON(c, &params); err != nil {
 		c.JSON(http.StatusBadRequest, err)
 		return
 	}
 
-	res, err := this.{{.Pkg}}UC.Store(item)
+	res, err := this.{{.Pkg}}UC.Store(params)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err)
 		return
@@ -51,12 +51,12 @@ func (this *Http{{.CamelPkg}}Handler) Store(c *gin.Context) {
 }
 
 func (this *Http{{.CamelPkg}}Handler) Update(c *gin.Context) {
-        id := this.ParseID(c)
-        item, err := this.{{.Pkg}}UC.FindById(id)
-        if err != nil {
+	id := this.ParseID(c)
+	item, err := this.{{.Pkg}}UC.FindById(id)
+	if err != nil {
 		c.JSON(http.StatusBadRequest, err)
 		return
-        }
+	}
 
 	if err := this.ValidateBindJSON(c, &item); err != nil {
 		c.JSON(http.StatusBadRequest, err)
