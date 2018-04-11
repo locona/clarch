@@ -103,22 +103,12 @@ func (this *uc) tplPath() string {
 }
 
 func (this *repo) gen() error {
-	if err := this.genInterface(); err != nil {
-		return err
-	}
-	if err := this.genGorm(); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (this *repo) genInterface() error {
-	fp, err := this.openFile("repo")
+	fp, err := this.openFile()
 	defer fp.Close()
 	if err != nil {
 		return err
 	}
-	b, err := bindata.Asset(this.tplPath("repo"))
+	b, err := bindata.Asset(this.tplPath())
 	if err != nil {
 		return err
 	}
@@ -133,48 +123,13 @@ func (this *repo) genInterface() error {
 	return t.Execute(fp, this.value)
 }
 
-func (this *repo) genGorm() error {
-	fp, err := this.openFile("gorm")
-	defer fp.Close()
-	if err != nil {
-		return err
-	}
-	b, err := bindata.Asset(this.tplPath("gorm"))
-	if err != nil {
-		return err
-	}
-
-	t := template.New("gorm_repo")
-	t, _ = t.Parse(string(b))
-	t = t.Funcs(template.FuncMap{
-		"safeHTML": func(s interface{}) template.HTML {
-			return template.HTML(fmt.Sprint(s))
-		},
-	})
-	return t.Execute(fp, this.value)
-}
-
-func (this *repo) openFile(storategy string) (*os.File, error) {
-	var filePath string
-	switch storategy {
-	case "repo":
-		filePath = fmt.Sprintf("%s/repository/repository.go", this.value.Pkg)
-	case "gorm":
-		filePath = fmt.Sprintf("%s/repository/gorm_repository.go", this.value.Pkg)
-	}
+func (this *repo) openFile() (*os.File, error) {
+	filePath := fmt.Sprintf("%s/repository/repository.go", this.value.Pkg)
 	return openOrCreate(filePath)
 }
 
-func (this *repo) tplPath(storategy string) string {
-	switch storategy {
-	case "repo":
-		return "clarch/templates/repository/repository.tpl"
-	case "gorm":
-		return "clarch/templates/repository/gorm_repository.tpl"
-	}
-
-	os.Exit(1)
-	return ""
+func (this *repo) tplPath() string {
+	return "clarch/templates/repository/repository.tpl"
 }
 
 func (this *entity) gen() error {
@@ -225,11 +180,6 @@ func (this *cmdadd) Add() error {
 }
 
 func NewCmdAdd(pkg string) *cmdadd {
-	// if err := openOrCreate(pkg); err != nil {
-	// log.Fatal(err)
-	// os.Exit(1)
-	// }
-
 	dir, _ := os.Getwd()
 	dirNames := strings.Split(dir, "/")
 	return &cmdadd{
