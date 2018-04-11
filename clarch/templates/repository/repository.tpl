@@ -34,7 +34,7 @@ func (this *gorm{{.CamelPkg}}Repository) FindById(id int) (*{{.Pkg}}.{{.CamelPkg
 	if err := this.DB.First(&item, id).Error; err != nil {
 		return nil, err
 	}
-	return &item, nil
+	return item, nil
 }
 
 func (this *gorm{{.CamelPkg}}Repository) Store(value *{{.Pkg}}.{{.CamelPkg}}) (*{{.Pkg}}.{{.CamelPkg}}, error) {
