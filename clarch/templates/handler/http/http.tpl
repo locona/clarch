@@ -42,7 +42,7 @@ func (this *Http{{.CamelPkg}}Handler) Store(c *gin.Context) {
 		return
 	}
 
-	res, err := this.{{.Pkg}}UC.Store(&item)
+	res, err := this.{{.Pkg}}UC.Store(item)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err)
 		return

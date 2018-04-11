@@ -18,10 +18,10 @@ type {{.Pkg}}Repository struct {
 }
 
 func New{{.CamelPkg}}Repository(DB *gorm.DB) {{.CamelPkg}}Repository {
-	return &gorm{{.CamelPkg}}Repository{DB}
+	return &{{.Pkg}}Repository{DB}
 }
 
-func (this *gorm{{.CamelPkg}}Repository) FindAll() ([]*{{.Pkg}}.{{.CamelPkg}}, error) {
+func (this *{{.Pkg}}Repository) FindAll() ([]*{{.Pkg}}.{{.CamelPkg}}, error) {
 	item := make([]*{{.Pkg}}.{{.CamelPkg}}, 0)
 	if err := this.DB.Find(&item).Error; err != nil {
 		return nil, err
@@ -29,7 +29,7 @@ func (this *gorm{{.CamelPkg}}Repository) FindAll() ([]*{{.Pkg}}.{{.CamelPkg}}, e
 	return item, nil
 }
 
-func (this *gorm{{.CamelPkg}}Repository) FindById(id int) (*{{.Pkg}}.{{.CamelPkg}}, error) {
+func (this *{{.Pkg}}Repository) FindById(id int) (*{{.Pkg}}.{{.CamelPkg}}, error) {
 	item := &{{.Pkg}}.{{.CamelPkg}}{}
 	if err := this.DB.First(&item, id).Error; err != nil {
 		return nil, err
@@ -37,14 +37,14 @@ func (this *gorm{{.CamelPkg}}Repository) FindById(id int) (*{{.Pkg}}.{{.CamelPkg
 	return item, nil
 }
 
-func (this *gorm{{.CamelPkg}}Repository) Store(value *{{.Pkg}}.{{.CamelPkg}}) (*{{.Pkg}}.{{.CamelPkg}}, error) {
+func (this *{{.Pkg}}Repository) Store(value *{{.Pkg}}.{{.CamelPkg}}) (*{{.Pkg}}.{{.CamelPkg}}, error) {
 	if err := this.DB.Create(&value).Error; err != nil {
 		return nil, err
 	}
 	return value, nil
 }
 
-func (this *gorm{{.CamelPkg}}Repository) Update(id int, value *{{.Pkg}}.{{.CamelPkg}}) (*{{.Pkg}}.{{.CamelPkg}}, error) {
+func (this *{{.Pkg}}Repository) Update(id int, value *{{.Pkg}}.{{.CamelPkg}}) (*{{.Pkg}}.{{.CamelPkg}}, error) {
         value.Id = id
 	if err := this.DB.Update(&value).Error; err != nil {
 		return nil, err
@@ -52,7 +52,7 @@ func (this *gorm{{.CamelPkg}}Repository) Update(id int, value *{{.Pkg}}.{{.Camel
 	return value, nil
 }
 
-func (this *gorm{{.CamelPkg}}Repository) Delete(id int) error {
+func (this *{{.Pkg}}Repository) Delete(id int) error {
 	item := &{{.Pkg}}.{{.CamelPkg}}{}
 	if err := this.DB.Delete(&item, id).Error; err != nil {
 		return err
