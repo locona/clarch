@@ -1,4 +1,4 @@
-package {{.Pkg}}
+package model
 
 import "time"
 

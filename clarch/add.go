@@ -23,7 +23,8 @@ type uc struct {
 type repo struct {
 	cmdadd
 }
-type entity struct {
+
+type model struct {
 	cmdadd
 }
 
@@ -39,144 +40,79 @@ type cmdadd struct {
 	value value
 }
 
-func (this *http) gen() error {
-	fp, err := this.openFile()
-	defer fp.Close()
-	if err != nil {
-		return err
-	}
-	b, err := bindata.Asset(this.tplPath())
-	if err != nil {
-		return err
-	}
+func gen(maps []map[string]string, value value) {
+	for idx := range maps {
+		fp, err := openOrCreate(maps[idx]["out"])
+		defer fp.Close()
+		if err != nil {
+			panic(err)
+		}
+		b, err := bindata.Asset(maps[idx]["tpl"])
+		if err != nil {
+			panic(err)
+		}
 
-	t := template.New("http")
-	t, _ = t.Parse(string(b))
-	t = t.Funcs(template.FuncMap{
-		"safeHTML": func(s interface{}) template.HTML {
-			return template.HTML(fmt.Sprint(s))
-		},
+		t := template.New("gen")
+		t, _ = t.Parse(string(b))
+		t = t.Funcs(template.FuncMap{
+			"safeHTML": func(s interface{}) template.HTML {
+				return template.HTML(fmt.Sprint(s))
+			},
+		})
+
+		if err := t.Execute(fp, value); err != nil {
+			panic(err)
+		}
+	}
+}
+
+func (this *http) mapTplAndOutPath() []map[string]string {
+	m := make([]map[string]string, 0)
+	m = append(m, map[string]string{
+		"tpl": "clarch/templates/handler/http/http.tpl",
+		"out": fmt.Sprintf("%s/handler/http/%s_handler.go", this.value.Pkg, this.value.Pkg),
 	})
-	return t.Execute(fp, this.value)
-}
 
-func (this *http) openFile() (*os.File, error) {
-	filePath := fmt.Sprintf("%s/handler/http/%s_handler.go", this.value.Pkg, this.value.Pkg)
-	return openOrCreate(filePath)
-}
-
-func (this *http) tplPath() string {
-	return "clarch/templates/handler/http/http.tpl"
-}
-
-func (this *http) genPath() string {
-	return fmt.Sprint("%s/entity.go")
-}
-
-func (this *uc) gen() error {
-	fp, err := this.openFile()
-	defer fp.Close()
-	if err != nil {
-		return err
-	}
-	b, err := bindata.Asset(this.tplPath())
-	if err != nil {
-		return err
-	}
-
-	t := template.New("http")
-	t, _ = t.Parse(string(b))
-	t = t.Funcs(template.FuncMap{
-		"safeHTML": func(s interface{}) template.HTML {
-			return template.HTML(fmt.Sprint(s))
-		},
+	m = append(m, map[string]string{
+		"tpl": "clarch/templates/handler/http/params.tpl",
+		"out": fmt.Sprintf("%s/handler/http/params.go", this.value.Pkg),
 	})
-	return t.Execute(fp, this.value)
+
+	return m
 }
 
-func (this *uc) openFile() (*os.File, error) {
-	filePath := fmt.Sprintf("%s/usecase/%s_uc.go", this.value.Pkg, this.value.Pkg)
-	return openOrCreate(filePath)
-}
-func (this *uc) tplPath() string {
-	return "clarch/templates/usecase/usecase.tpl"
-}
-
-func (this *repo) gen() error {
-	fp, err := this.openFile()
-	defer fp.Close()
-	if err != nil {
-		return err
-	}
-	b, err := bindata.Asset(this.tplPath())
-	if err != nil {
-		return err
-	}
-
-	t := template.New("repo")
-	t, _ = t.Parse(string(b))
-	t = t.Funcs(template.FuncMap{
-		"safeHTML": func(s interface{}) template.HTML {
-			return template.HTML(fmt.Sprint(s))
-		},
+func (this *uc) mapTplAndOutPath() []map[string]string {
+	m := make([]map[string]string, 0)
+	m = append(m, map[string]string{
+		"tpl": "clarch/templates/usecase/usecase.tpl",
+		"out": fmt.Sprintf("%s/usecase/%s_uc.go", this.value.Pkg, this.value.Pkg),
 	})
-	return t.Execute(fp, this.value)
+	return m
 }
 
-func (this *repo) openFile() (*os.File, error) {
-	filePath := fmt.Sprintf("%s/repository/repository.go", this.value.Pkg)
-	return openOrCreate(filePath)
-}
-
-func (this *repo) tplPath() string {
-	return "clarch/templates/repository/repository.tpl"
-}
-
-func (this *entity) gen() error {
-	fp, err := this.openFile()
-	defer fp.Close()
-	if err != nil {
-		return err
-	}
-	b, err := bindata.Asset(this.tplPath())
-	if err != nil {
-		return err
-	}
-
-	t := template.New("entity")
-	t, _ = t.Parse(string(b))
-	t = t.Funcs(template.FuncMap{
-		"safeHTML": func(s interface{}) template.HTML {
-			return template.HTML(fmt.Sprint(s))
-		},
+func (this *repo) mapTplAndOutPath() []map[string]string {
+	m := make([]map[string]string, 0)
+	m = append(m, map[string]string{
+		"tpl": "clarch/templates/repository/repository.tpl",
+		"out": fmt.Sprintf("%s/repository/repository.go", this.value.Pkg),
 	})
-	return t.Execute(fp, this.value)
+	return m
 }
 
-func (this *entity) openFile() (*os.File, error) {
-	filePath := fmt.Sprintf("%s/entity.go", this.value.Pkg)
-	return openOrCreate(filePath)
+func (this *model) mapTplAndOutPath() []map[string]string {
+	m := make([]map[string]string, 0)
+	m = append(m, map[string]string{
+		"tpl": "clarch/templates/model.tpl",
+		"out": fmt.Sprintf("model/%s.go", this.value.Pkg),
+	})
+	return m
 }
 
-func (this *entity) tplPath() string {
-	return "clarch/templates/entity.tpl"
-}
-
-func (this *cmdadd) Add() error {
-	if err := GenHttp(this); err != nil {
-		return err
-	}
-	if err := GenUC(this); err != nil {
-		return err
-	}
-	if err := GenRepo(this); err != nil {
-		return err
-	}
-	if err := GenEntity(this); err != nil {
-		return err
-	}
-
-	return nil
+func (this *cmdadd) Add() {
+	GenHttp(this)
+	GenUC(this)
+	GenRepo(this)
+	GenModel(this)
 }
 
 func NewCmdAdd(pkg string) *cmdadd {
@@ -193,22 +129,22 @@ func NewCmdAdd(pkg string) *cmdadd {
 	}
 }
 
-func GenHttp(cmd *cmdadd) error {
+func GenHttp(cmd *cmdadd) {
 	o := http{*cmd}
-	return o.gen()
+	gen(o.mapTplAndOutPath(), cmd.value)
 }
 
-func GenUC(cmd *cmdadd) error {
+func GenUC(cmd *cmdadd) {
 	o := uc{*cmd}
-	return o.gen()
+	gen(o.mapTplAndOutPath(), cmd.value)
 }
 
-func GenRepo(cmd *cmdadd) error {
+func GenRepo(cmd *cmdadd) {
 	o := repo{*cmd}
-	return o.gen()
+	gen(o.mapTplAndOutPath(), cmd.value)
 }
 
-func GenEntity(cmd *cmdadd) error {
-	o := entity{*cmd}
-	return o.gen()
+func GenModel(cmd *cmdadd) {
+	o := model{*cmd}
+	gen(o.mapTplAndOutPath(), cmd.value)
 }

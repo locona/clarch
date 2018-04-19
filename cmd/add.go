@@ -15,9 +15,7 @@
 package cmd
 
 import (
-	"fmt"
 	"log"
-	"os"
 
 	"github.com/locona/clarch/clarch"
 	"github.com/spf13/cobra"
@@ -34,11 +32,6 @@ var AddCmd = &cobra.Command{
 			log.Fatal("required args")
 		}
 		c := clarch.NewCmdAdd(pkg)
-		if err := c.Add(); err != nil {
-			fmt.Println(err)
-			cmd.Println(err)
-			os.Exit(1)
-		}
-
+		c.Add()
 	},
 }
