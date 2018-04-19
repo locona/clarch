@@ -26,8 +26,6 @@ var InitCmd = &cobra.Command{
 	Long:  "",
 	Run: func(cmd *cobra.Command, args []string) {
 		c := clarch.NewCmdInit()
-		if err := c.Init(); err != nil {
-			cmd.Println(err)
-		}
+		c.Init()
 	},
 }

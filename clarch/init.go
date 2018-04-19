@@ -10,23 +10,38 @@ import (
 
 type CmdInit struct{}
 
-func (this *CmdInit) Init() error {
+func (this *CmdInit) Init() {
 	dirPath := "project"
-	if err := mkdir(dirPath); err != nil {
-		return err
-	}
+	maps := make([]map[string]string, 0)
+	maps = append(maps, map[string]string{
+		"tpl": "clarch/templates/project/handler.tpl",
+		"out": fmt.Sprintf("%s/handler.go", dirPath),
+	})
+	maps = append(maps, map[string]string{
+		"tpl": "clarch/templates/project/repository.tpl",
+		"out": fmt.Sprintf("%s/repository.go", dirPath),
+	})
 
-	tplFile, err := bindata.Asset("clarch/templates/project/handler.tpl")
-	t := template.New("project")
-	t, _ = t.Parse(string(tplFile))
-	fp, err := os.OpenFile(fmt.Sprintf("%s/handler.go", dirPath), os.O_RDWR|os.O_CREATE, 0666)
-	if err != nil {
-		return err
-	}
-	defer fp.Close()
+	for idx := range maps {
+		if err := mkdir(dirPath); err != nil {
+			panic(err)
+		}
 
-	value := struct{}{}
-	return t.Execute(fp, value)
+		tplFile, err := bindata.Asset(maps[idx]["tpl"])
+		t := template.New("project")
+		t, _ = t.Parse(string(tplFile))
+		fp, err := os.OpenFile(maps[idx]["out"], os.O_RDWR|os.O_CREATE, 0666)
+		if err != nil {
+			panic(err)
+		}
+		defer fp.Close()
+
+		value := struct{}{}
+
+		if err := t.Execute(fp, value); err != nil {
+			panic(err)
+		}
+	}
 }
 
 func NewCmdInit() *CmdInit {
