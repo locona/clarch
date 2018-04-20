@@ -5,8 +5,6 @@ import (
 
 	"github.com/k0kubun/pp"
 	"github.com/kelseyhightower/envconfig"
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 )
 
 var Config *conf
@@ -23,12 +21,16 @@ type Mysql struct {
 	Port     string `default:"3306"`
 }
 
-type Logger struct{}
+type Redis struct {
+	Host    string `required:"true" default:"127.0.0.1"`
+	Port    string `required:"true" default:"6379"`
+	MaxConn int    `required:"true" default:"1000"`
+}
 
 type conf struct {
 	API
-	Logger *zap.Config
 	Mysql
+	Redis
 }
 
 func (this *conf) Print() {
@@ -36,38 +38,24 @@ func (this *conf) Print() {
 }
 
 func InitConfig() {
-	var api API
+	api := API{}
 	if err := envconfig.Process("api", &api); err != nil {
 		log.Fatal(err)
 	}
 
-	var mysql Mysql
+	mysql := Mysql{}
 	if err := envconfig.Process("mysql", &mysql); err != nil {
+		log.Fatal(err)
+	}
+
+	redis := Redis{}
+	if err := envconfig.Process("redis", &redis); err != nil {
 		log.Fatal(err)
 	}
 
 	Config = &conf{
 		API:   api,
 		Mysql: mysql,
-		Logger: func() *zap.Config {
-			conf := zap.Config{
-				Level:         zap.NewAtomicLevelAt(zap.DebugLevel),
-				Development:   true,
-				Encoding:      "console",
-				EncoderConfig: zap.NewDevelopmentEncoderConfig(),
-				Sampling: &zap.SamplingConfig{
-					Initial:    100,
-					Thereafter: 100,
-				},
-				OutputPaths: []string{
-					"stdout",
-				},
-				ErrorOutputPaths: []string{
-					"stderr",
-				},
-			}
-			conf.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
-			return &conf
-		}(),
+		Redis: redis,
 	}
 }

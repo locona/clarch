@@ -7,13 +7,12 @@ import (
 	"strings"
 )
 
-func mkdir(filePath string) error {
-	return os.MkdirAll(filePath, os.ModePerm)
-}
-
 func openOrCreate(filePath string) (*os.File, error) {
 	paths := strings.Split(filePath, "/")
-	// fileName := paths[len(paths)-1]
+	if len(paths) == 1 {
+		return os.OpenFile(paths[0], os.O_RDWR|os.O_CREATE, 0666)
+	}
+
 	dirs := strings.Join(paths[0:len(paths)-1], "/")
 	if err := os.MkdirAll(dirs, os.ModePerm); err != nil {
 		log.Fatal(err)

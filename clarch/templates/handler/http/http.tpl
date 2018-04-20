@@ -3,7 +3,7 @@ package http
 import (
 	"net/http"
 
-	"github.com/{{.CurrentUser}}/{{.CurrentRepo}}/{{.Pkg}}"
+	"github.com/{{.CurrentUser}}/{{.CurrentRepo}}/model"
 	"github.com/{{.CurrentUser}}/{{.CurrentRepo}}/{{.Pkg}}/usecase"
 	"github.com/{{.CurrentUser}}/{{.CurrentRepo}}/project"
 	"github.com/gin-gonic/gin"
@@ -60,7 +60,7 @@ func (this *Http{{.CamelPkg}}Handler) Update(c *gin.Context) {
 		return
 	}
 
-	id := this.ParseID(c)
+	id := this.ParseId(c)
 	v := &model.{{.CamelPkg}}{
 		Id: id,
 	}
@@ -74,7 +74,7 @@ func (this *Http{{.CamelPkg}}Handler) Update(c *gin.Context) {
 }
 
 func (this *Http{{.CamelPkg}}Handler) Delete(c *gin.Context) {
-	id := this.ParseID(c)
+	id := this.ParseId(c)
 
 	where := &model.{{.CamelPkg}}{
 		Id:     id,

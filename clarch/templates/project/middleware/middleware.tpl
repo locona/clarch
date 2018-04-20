@@ -4,37 +4,45 @@ import (
 	"fmt"
 	"time"
 
-	authMiddle "github.com/3-shake/reckoner-dmh-server/auth/handler/middleware"
+	"github.com/{{.CurrentUser}}/{{.CurrentRepo}}/project/logger"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
 type middle struct {
-	authMiddle.MiddlewareAuthHandler
+	// authMiddle.MiddlewareAuthHandler
 }
 
 type MiddlewareImpl interface {
-	Logging(conf *zap.Config) gin.HandlerFunc
-	Authenticate() gin.HandlerFunc
+	Cors() gin.HandlerFunc
+	Logging() gin.HandlerFunc
+	// Authenticate() gin.HandlerFunc
 }
 
-func NewMiddleware(authHandler authMiddle.MiddlewareAuthHandler) MiddlewareImpl {
-	return &middle{authHandler}
+func NewMiddleware() MiddlewareImpl {
+	return &middle{}
 }
 
-func (this *middle) Logging(conf *zap.Config) gin.HandlerFunc {
-	logger, _ := conf.Build()
+func (this *middle) Cors() gin.HandlerFunc {
+	config := cors.DefaultConfig()
+	config.AddAllowMethods("DELETE")
+	config.AddAllowHeaders("Access-Control-Allow-Origin", "Authorization")
+	config.AllowAllOrigins = true
+	return cors.New(config)
+}
+
+func (this *middle) Logging() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		start := time.Now().UTC()
-		c.Set("logger", logger)
 		c.Next()
 
 		latency := time.Since(start)
 
 		path := c.Request.URL.Path
 		method := c.Request.Method
-		logger.Info(
+		logger.Logger.Info(
 			fmt.Sprintf("%s %s", c.Request.Method, path),
 			zap.String("prefix", "ADN-API"),
 			zap.String("path", path),
@@ -47,12 +55,6 @@ func (this *middle) Logging(conf *zap.Config) gin.HandlerFunc {
 			zapFieldStringsByStringMap("header", c.Request.Header),
 			zapFieldStringsByStringMap("query", c.Request.URL.Query()),
 		)
-
-		if len(c.Errors) > 0 {
-			for _, errMsg := range c.Errors.Errors() {
-				logger.Error(errMsg)
-			}
-		}
 	}
 }
 

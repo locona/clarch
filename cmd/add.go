@@ -31,7 +31,7 @@ var AddCmd = &cobra.Command{
 		if pkg == "" {
 			log.Fatal("required args")
 		}
-		c := clarch.NewCmdAdd(pkg)
+		c := clarch.NewAdd(pkg)
 		c.Add()
 	},
 }

@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"github.com/{{.CurrentUser}}/{{.CurrentRepo}}/project"
 	"github.com/{{.CurrentUser}}/{{.CurrentRepo}}/model"
 	"github.com/jinzhu/gorm"
 )
@@ -19,7 +20,7 @@ type {{.Pkg}}Repository struct {
 }
 
 func New{{.CamelPkg}}Repository(DB *gorm.DB) {{.CamelPkg}}Repository {
-	return &{{.Pkg}}Repository{DB}
+	return &{{.Pkg}}Repository{DB: DB}
 }
 
 func (this *{{.Pkg}}Repository) FindBy(where *model.{{.CamelPkg}}) ([]*model.{{.CamelPkg}}, error) {
@@ -31,7 +32,7 @@ func (this *{{.Pkg}}Repository) FindBy(where *model.{{.CamelPkg}}) ([]*model.{{.
 }
 
 func (this *{{.Pkg}}Repository) FirstBy(where *model.{{.CamelPkg}}) (*model.{{.CamelPkg}}, error) {
-	item := &{{.Pkg}}.{{.CamelPkg}}{}
+	item := &model.{{.CamelPkg}}{}
 	if err := this.DB.Where(where).First(item).Error; err != nil {
 		return nil, err
 	}
@@ -58,8 +59,8 @@ func (this *{{.Pkg}}Repository) Update(value *model.{{.CamelPkg}}) (*model.{{.Ca
 	return value, nil
 }
 
-func (this *{{.Pkg}}Repository) Delete(where *model) error {
-	item := &{{.Pkg}}.{{.CamelPkg}}{}
+func (this *{{.Pkg}}Repository) Delete(where *model.{{.CamelPkg}}) error {
+	item := &model.{{.CamelPkg}}{}
 	if err := this.DB.Where(where).Delete(item).Error; err != nil {
 		return err
 	}

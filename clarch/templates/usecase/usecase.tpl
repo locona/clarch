@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"errors"
-	"github.com/{{.CurrentUser}}/{{.CurrentRepo}}/{{.Pkg}}"
+	"github.com/{{.CurrentUser}}/{{.CurrentRepo}}/model"
 	{{.Pkg}}Repo "github.com/{{.CurrentUser}}/{{.CurrentRepo}}/{{.Pkg}}/repository"
 )
 
@@ -62,7 +62,7 @@ func (this *{{.Pkg}}Usecase) Update(value *model.{{.CamelPkg}}) (*model.{{.Camel
 }
 
 func (this *{{.Pkg}}Usecase) Delete(where *model.{{.CamelPkg}}) error {
-	existed, err := this.userRepo.FirstBy(where)
+	existed, err := this.{{.Pkg}}Repo.FirstBy(where)
 	if err != nil {
 		return errors.New("Not found")
 	}
