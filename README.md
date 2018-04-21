@@ -8,7 +8,12 @@
 go get github.com/locona/clarch
 ```
 
-### Init 
+### New Project
+```
+clarch new sample-project
+```
+
+if already repository exist.
 
 ```
 clarch init
