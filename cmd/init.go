@@ -24,6 +24,7 @@ var InitCmd = &cobra.Command{
 	Use:   "init",
 	Short: "",
 	Long:  "",
+	Args:  cobra.MaximumNArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 		c := clarch.NewInit()
 		c.Init()
