@@ -10,7 +10,7 @@ import (
 
 type HandlerProject struct{}
 
-func (this *HandlerProject) ParseId(c *gin.Context) int {
+func (this *HandlerProject) ParseID(c *gin.Context) int {
 	if id, err := strconv.Atoi(c.Param("id")); err == nil {
 		return id
 	}

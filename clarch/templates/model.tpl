@@ -3,7 +3,7 @@ package model
 import "time"
 
 type {{.CamelPkg}} struct {
-	Id int `json:"id" gorm:"primary_key"`
+	ID int `json:"id" gorm:"primary_key"`
 
 	CreatedAt time.Time  `json:"created_at"`
 	UpdatedAt time.Time  `json:"updated_at"`
