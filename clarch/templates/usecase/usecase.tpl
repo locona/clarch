@@ -46,7 +46,7 @@ func (this *{{.Pkg}}Usecase) Store(value *model.{{.CamelPkg}}) (*model.{{.CamelP
 
 func (this *{{.Pkg}}Usecase) Update(value *model.{{.CamelPkg}}) (*model.{{.CamelPkg}}, error) {
 	where := &model.{{.CamelPkg}} {
-		Id: value.Id,
+		ID: value.ID,
 	}
         if _, err := this.{{.Pkg}}Repo.FirstBy(where);err == nil {
 		err = errors.New("Not found")

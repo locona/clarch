@@ -27,8 +27,8 @@ func (this *Http{{.CamelPkg}}Handler) List(c *gin.Context) {
 }
 
 func (this *Http{{.CamelPkg}}Handler) Show(c *gin.Context) {
-	id := this.ParseId(c)
-	where := &model.{{.CamelPkg}}{Id: id}
+	id := this.ParseID(c)
+	where := &model.{{.CamelPkg}}{ID: id}
 	item, err := this.{{.Pkg}}UC.Show(where)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err)
@@ -60,9 +60,9 @@ func (this *Http{{.CamelPkg}}Handler) Update(c *gin.Context) {
 		return
 	}
 
-	id := this.ParseId(c)
+	id := this.ParseID(c)
 	v := &model.{{.CamelPkg}}{
-		Id: id,
+		ID: id,
 	}
 
 	res, err := this.{{.Pkg}}UC.Update(v)
@@ -74,10 +74,10 @@ func (this *Http{{.CamelPkg}}Handler) Update(c *gin.Context) {
 }
 
 func (this *Http{{.CamelPkg}}Handler) Delete(c *gin.Context) {
-	id := this.ParseId(c)
+	id := this.ParseID(c)
 
 	where := &model.{{.CamelPkg}}{
-		Id:     id,
+		ID:     id,
 	}
 	if err := this.{{.Pkg}}UC.Delete(where); err != nil {
 		c.JSON(http.StatusBadRequest, err)

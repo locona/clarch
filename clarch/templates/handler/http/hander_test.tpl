@@ -35,7 +35,7 @@ func TestFindAll(t *testing.T) {
 	mockUCase.AssertExpectations(t)
 }
 
-func TestFindById(t *testing.T) {
+func TestFindByID(t *testing.T) {
 	var j {{.Pkg}}.{{.CamelPkg}}
 	err := faker.FakeData(&j)
 	assert.NoError(t, err)
